@@ -34,28 +34,3 @@ $('#addTrainBtn').on("click", function () {
     return false;
 });
 
-database.ref().on("child_added", function (childSnapshot) {
-    console.log(childSnapshot.val());
-
-    let trainName = childSnapshot.val().name;
-    let destination = childSnapshot.val().place;
-    let firstTrain = childSnapshot.val().ftrain;
-    let frequency = childSnapshot.val().freq;
-
-    let firstTimeConverted = moment(firstTrain, "HH:mm");
-    console.log(firstTimeConverted);
-    let currentTime = moment().format("HH:mm");
-    console.log("CURRENT TIME: " + currentTime);
-
-    let timeDiff = moment().diff(moment(firstTimeConverted), "minutes");
-    console.log(firstTrain);
-    console.log("Difference in Time: " + timeDiff);
-
-    let timeRemainder = timeDiff % frequency;
-    console.log(timeRemainder);
-
-    let minToTrain = frequency - timeRemainder;
-
-    let nxTrain = moment().add(minToTrain, "minutes").format("HH:mm");
-    $("#trainTable>tbody").append("<tr><td>" + trainName + "</td><td>" + destination + "</td><td>" + nxTrain + "</td><td>" + frequency + "</td><td>" + minToTrain + "</td></tr>");
-});
